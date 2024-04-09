@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "knowhax"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+license = "CC0 1.0 Universal"
+readme = "README.md"
+packages = [
+    { include = "knowhax", from = "src" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+taipy = "^3.1.1"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.1.1"
+invoke = "^2.2.0"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
