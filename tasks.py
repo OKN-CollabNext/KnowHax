@@ -2,5 +2,5 @@ from invoke import task
 
 
 @task
-def hello(c):
+def hello(_):
     print("Hello, world!")
