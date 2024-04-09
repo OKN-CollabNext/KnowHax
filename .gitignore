@@ -4,3 +4,6 @@
 *.pyd
 __pycache__/
 .venv/
+
+# Ignore vscode settings
+.vscode/
