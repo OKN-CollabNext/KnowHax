@@ -1,9 +1,11 @@
 # Ignore python related files (cache, virtual environment, etc.)
-*.pyc
-*.pyo
-*.pyd
-__pycache__/
-.venv/
-
 # Ignore vscode settings
+*.db
+*.py[cod]
+*.pyc
+*.pyd
+*.pyo
+.venv/
 .vscode/
+.web
+__pycache__/
