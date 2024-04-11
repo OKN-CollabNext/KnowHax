@@ -12,6 +12,11 @@ you can install the python version for this project by running:
 pyenv install 3.11.4
 ```
 
+### Node
+
+This code base is compatible with node 18 and above. Please use [the following instructions](https://nodejs.org/en/learn/getting-started/how-to-install-nodejs)
+to install node for your operating system if needed.
+
 ### Git
 
 Please [follow the instructions on GitHub](https://github.com/git-guides/install-git) to install git on your system.
@@ -48,4 +53,4 @@ This project uses [Observable Framework](https://observablehq.com/framework/). Y
 invoke run
 ```
 
-The homepage will be launched in your browser at http://127.0.0.1:5000
+The homepage will be launched in your browser at http://127.0.0.1:3000
