@@ -6,12 +6,11 @@ authors = ["Your Name <you@example.com>"]
 license = "CC0 1.0 Universal"
 readme = "README.md"
 packages = [
-    { include = "knowhax", from = "src" }
+    { include = "knowhax", from = "." }
 ]
 
 [tool.poetry.dependencies]
 python = "^3.11"
-taipy = "^3.1.1"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -19,7 +18,7 @@ pytest = "^8.1.1"
 invoke = "^2.2.0"
 
 [tool.pytest.ini_options]
-pythonpath = ["src"]
+pythonpath = ["."]
 
 [build-system]
 requires = ["poetry-core"]
