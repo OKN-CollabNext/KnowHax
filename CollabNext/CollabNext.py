@@ -2,6 +2,7 @@
 
 import reflex as rx
 
+from custom_components.orb.orb import Orb
 from rxconfig import config
 
 docs_url = "https://reflex.dev/docs/getting-started/introduction/"
@@ -12,13 +13,16 @@ class State(rx.State):
     """The app state."""
 
 
+orb = Orb.create
+
+
 def index() -> rx.Component:
     return rx.center(
-        rx.theme_panel(),
         rx.vstack(
-            rx.heading("Welcome to Collab Next!", size="9"),
+            rx.heading("Welcome to CollabNext!", size="9"),
             rx.text("Search for anything"),
             rx.input(),
+            orb(),
             rx.logo(),
             align="center",
             spacing="7",
