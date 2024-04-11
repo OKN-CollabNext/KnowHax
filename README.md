@@ -42,7 +42,7 @@ poetry install
 
 ## Running
 
-This project uses [Taipy](https://www.taipy.io/). You can run the site locally as follows
+This project uses [Observable Framework](https://observablehq.com/framework/). You can run the site locally as follows
 
 ```bash
 invoke run
