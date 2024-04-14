@@ -7,3 +7,6 @@ __pycache__/
 
 # Ignore vscode settings
 .vscode/
+
+# Ignore dot env files
+.env

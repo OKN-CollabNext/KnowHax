@@ -45,6 +45,14 @@ You can then install project dependencies as follows:
 poetry install
 ```
 
+You need a `.env` file to store secrets as follows:
+
+```
+OPENALEX_EMAIL=mailto@example.com
+```
+
+The OPENALEX_EMAIL secret is used to [speed up calls](https://docs.openalex.org/how-to-use-the-api/api-overview) to the OpenAlex REST API.
+
 ## Running
 
 This project uses [Observable Framework](https://observablehq.com/framework/). You can run the site locally as follows
