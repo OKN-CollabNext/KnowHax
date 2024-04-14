@@ -11,6 +11,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.11"
+pyalex = "^0.14"
 
 
 [tool.poetry.group.dev.dependencies]
