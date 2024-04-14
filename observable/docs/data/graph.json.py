@@ -6,9 +6,16 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Sample data (will be replaced later with real data)
-data = [
+nodes = [
+    {"id": 1, "label": "Orb"},
+    {"id": 2, "label": "Graph"},
+    {"id": 3, "label": "Canvas"},
+]
+
+# Sample data (will be replaced later with real data)
+edges = [
     {"id": 1, "start": 1, "end": 2, "label": "DRAWS"},
     {"id": 2, "start": 2, "end": 3, "label": "ON"},
 ]
 
-print(json.dumps(data))
+print(json.dumps({"nodes": nodes, "edges": edges}))
