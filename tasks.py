@@ -19,3 +19,8 @@ def run(c):
 @task
 def deploy(c):
     c.run("cd observable && yarn deploy")
+
+
+@task
+def clean_branches(c):
+    c.run("git branch | grep -v 'main' | xargs git branch -D")

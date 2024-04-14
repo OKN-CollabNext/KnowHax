@@ -1,0 +1,37 @@
+name: Deploy
+
+on:
+  # Run this workflow whenever a new commit is pushed to main.
+  push: { branches: [main] }
+  # Run this workflow when triggered manually in GitHub’s UI.
+  workflow_dispatch: {}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: observable
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: yarn
+          cache-dependency-path: observable/package.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.4"
+      - name: Setup Poetry
+        uses: Gr1N/setup-poetry@v8
+        with:
+          poetry-version: "1.7.1"
+      - run: poetry install --no-root
+      - run: yarn install --frozen-lockfile
+      - run: poetry run yarn build
+      - name: Deploy to Observable Cloud
+        # This parameter to `--message` will use the latest commit message
+        run: yarn deploy -- --message "$(git log -1 --pretty=%s)"
+        env:
+          # Auth token to deploy to Observable Cloud
+          OBSERVABLE_TOKEN: ${{ secrets.OBSERVABLE_TOKEN }}
