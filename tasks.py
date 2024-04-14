@@ -23,4 +23,4 @@ def deploy(c):
 
 @task
 def clean_branches(c):
-    c.run("git branch | grep -v 'master' | xargs git branch -D")
+    c.run("git branch | grep -v 'main' | xargs git branch -D")
