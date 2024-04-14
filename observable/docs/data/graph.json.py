@@ -14,13 +14,23 @@ pyalex.config.email = os.getenv("OPENALEX_EMAIL")
 # Get 5 random institutions
 institutions = [Institutions().random() for _ in range(5)]
 
-nodes = [{"id": x["id"], "label": x["display_name"]} for x in institutions]
-
-
-# Sample data (will be replaced later with real data)
-edges = [
-    {"id": 1, "start": 1, "end": 2, "label": "DRAWS"},
-    {"id": 2, "start": 2, "end": 3, "label": "ON"},
+# Gather associated institutions
+associated_institutions = [
+    y for x in institutions for y in x["associated_institutions"]
 ]
+
+# Combine all institutions
+all_institutions = [*institutions, *associated_institutions]
+
+# Create nodes
+nodes = [{"id": x["id"], "label": x["display_name"]} for x in all_institutions]
+
+# Create associated institution edges
+edges = [
+    {"id": x["id"], "start": x["id"], "end": y["id"], "label": "ASSOCIATED"}
+    for x in institutions
+    for y in x["associated_institutions"]
+]
+
 
 print(json.dumps({"nodes": nodes, "edges": edges}))

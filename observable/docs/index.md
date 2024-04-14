@@ -21,7 +21,7 @@ const graph = FileAttachment("data/graph.json").json();
 ```js
 const { nodes, edges } = graph;
 ```
-f
+
 <script src="https://unpkg.com/@memgraph/orb/dist/browser/orb.min.js"></script>
 
 ```js
