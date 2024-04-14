@@ -14,20 +14,15 @@ const query = view(Inputs.text());
 
 ### Your Peer Network
 
+```js
+const nodes = FileAttachment("data/nodes.json").json();
+const edges = FileAttachment("data/edges.json").json();
+```
+
 <script src="https://unpkg.com/@memgraph/orb/dist/browser/orb.min.js"></script>
 
 ```js
 const container = document.getElementById("graph");
-
-const nodes = [
-  { id: 1, label: "Orb" },
-  { id: 2, label: "Graph" },
-  { id: 3, label: "Canvas" },
-];
-const edges = [
-  { id: 1, start: 1, end: 2, label: "DRAWS" },
-  { id: 2, start: 2, end: 3, label: "ON" },
-];
 
 const orb = new Orb.Orb(container);
 
