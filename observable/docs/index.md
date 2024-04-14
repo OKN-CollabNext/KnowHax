@@ -16,17 +16,13 @@ const query = view(Inputs.text());
 
 ```js
 const nodes = FileAttachment("data/nodes.json").json();
+const edges = FileAttachment("data/edges.json").json();
 ```
 
 <script src="https://unpkg.com/@memgraph/orb/dist/browser/orb.min.js"></script>
 
 ```js
 const container = document.getElementById("graph");
-
-const edges = [
-  { id: 1, start: 1, end: 2, label: "DRAWS" },
-  { id: 2, start: 2, end: 3, label: "ON" },
-];
 
 const orb = new Orb.Orb(container);
 
