@@ -15,9 +15,13 @@ const query = view(Inputs.text());
 ### Your Peer Network
 
 ```js
-const { nodes, edges } = FileAttachment("data/graph.json").json();
+const graph = FileAttachment("data/graph.json").json();
 ```
 
+```js
+const { nodes, edges } = graph;
+```
+f
 <script src="https://unpkg.com/@memgraph/orb/dist/browser/orb.min.js"></script>
 
 ```js

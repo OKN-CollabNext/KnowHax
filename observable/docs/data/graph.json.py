@@ -1,16 +1,21 @@
 import json
+import os
 
+import pyalex
 from dotenv import load_dotenv
+from pyalex import Institutions
 
 # Load Secrets
 load_dotenv()
 
-# Sample data (will be replaced later with real data)
-nodes = [
-    {"id": 1, "label": "Orb"},
-    {"id": 2, "label": "Graph"},
-    {"id": 3, "label": "Canvas"},
-]
+# Initialize the pyalex client
+pyalex.config.email = os.getenv("OPENALEX_EMAIL")
+
+# Get 5 random institutions
+institutions = [Institutions().random() for _ in range(5)]
+
+nodes = [{"id": x["id"], "label": x["display_name"]} for x in institutions]
+
 
 # Sample data (will be replaced later with real data)
 edges = [
