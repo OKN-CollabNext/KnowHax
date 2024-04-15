@@ -85,4 +85,4 @@ orb.view.render(() => {
 });
 ```
 
-<div id="graph"></div>
+<div id="graph" style="width:640px; height:800px"></div>

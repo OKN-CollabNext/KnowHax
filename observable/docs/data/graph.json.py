@@ -33,21 +33,26 @@ institution_nodes = [
     for x in all_institutions
 ]
 
-# Get unique authors affiliated with each institution
+# Get unique affiliated authors
 seen = set()
-author_nodes = [
-    {"id": y["id"], "label": y["display_name"], "type": "AUTHOR"}
+authors = [
+    y
     for x in all_institutions
     for y in Authors().filter(affiliations={"institution": {"id": x["id"]}}).get()
     if not (y["id"] in seen or seen.add(y["id"]))
 ]
 
+# Get unique authors affiliated with each institution
+author_nodes = [
+    {"id": x["id"], "label": x["display_name"], "type": "AUTHOR"} for x in authors
+]
+
 nodes = [*institution_nodes, *author_nodes]
 
 # Create associated institution edges
-edges = [
+associated_institution_edges = [
     {
-        "id": x["id"],
+        "id": f"""{x["id"]}-{y["id"]}""",
         "start": x["id"],
         "end": y["id"],
         "label": "ASSOCIATED",
@@ -57,6 +62,18 @@ edges = [
     for x in institutions
     for y in x["associated_institutions"]
 ]
-
+affiliated_author_edges = [
+    {
+        "id": f"""{x["id"]}-{y["institution"]["id"]}""",
+        "start": x["id"],
+        "end": y["institution"]["id"],
+        "label": "AFFILIATED",
+        "start_type": "AUTHOR",
+        "end_type": "INSTITUTION",
+    }
+    for x in authors
+    for y in x["affiliations"]
+]
+edges = [*associated_institution_edges, *affiliated_author_edges]
 
 print(json.dumps({"nodes": nodes, "edges": edges}))
