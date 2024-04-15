@@ -19,8 +19,13 @@ associated_institutions = [
     y for x in institutions for y in x["associated_institutions"]
 ]
 
-# Combine all institutions
-all_institutions = [*institutions, *associated_institutions]
+# Combine all unique institutions
+seen = set()
+all_institutions = [
+    x
+    for x in [*institutions, *associated_institutions]
+    if not (x["id"] in seen or seen.add(x["id"]))
+]
 
 # Create nodes
 institution_nodes = [
@@ -28,11 +33,13 @@ institution_nodes = [
     for x in all_institutions
 ]
 
-# Get authors affiliated with each institution
+# Get unique authors affiliated with each institution
+seen = set()
 author_nodes = [
     {"id": y["id"], "label": y["display_name"], "type": "AUTHOR"}
     for x in all_institutions
     for y in Authors().filter(affiliations={"institution": {"id": x["id"]}}).get()
+    if not (y["id"] in seen or seen.add(y["id"]))
 ]
 
 nodes = [*institution_nodes, *author_nodes]
