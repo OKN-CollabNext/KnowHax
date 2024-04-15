@@ -3,7 +3,7 @@ import os
 
 import pyalex
 from dotenv import load_dotenv
-from pyalex import Institutions
+from pyalex import Authors, Institutions
 
 # Load Secrets
 load_dotenv()
@@ -23,11 +23,30 @@ associated_institutions = [
 all_institutions = [*institutions, *associated_institutions]
 
 # Create nodes
-nodes = [{"id": x["id"], "label": x["display_name"]} for x in all_institutions]
+institution_nodes = [
+    {"id": x["id"], "label": x["display_name"], "type": "INSTITUTION"}
+    for x in all_institutions
+]
+
+# Get authors affiliated with each institution
+author_nodes = [
+    {"id": y["id"], "label": y["display_name"], "type": "AUTHOR"}
+    for x in all_institutions
+    for y in Authors().filter(affiliations={"institution": {"id": x["id"]}}).get()
+]
+
+nodes = [*institution_nodes, *author_nodes]
 
 # Create associated institution edges
 edges = [
-    {"id": x["id"], "start": x["id"], "end": y["id"], "label": "ASSOCIATED"}
+    {
+        "id": x["id"],
+        "start": x["id"],
+        "end": y["id"],
+        "label": "ASSOCIATED",
+        "start_type": "INSTITUTION",
+        "end_type": "INSTITUTION",
+    }
     for x in institutions
     for y in x["associated_institutions"]
 ]
