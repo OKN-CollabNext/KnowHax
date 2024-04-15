@@ -49,11 +49,11 @@ orb.data.setDefaultStyle({
       size: 6,
     };
 
-    if (node.data.label === "Node A") {
+    if (node.data.type === "AUTHOR") {
       return {
         ...basicStyle,
         size: 10,
-        color: "#00FF2B",
+        color: "#0df2c9",
         zIndex: 1,
       };
     }
@@ -85,4 +85,4 @@ orb.view.render(() => {
 });
 ```
 
-<div id="graph"></div>
+<div id="graph" style="width:100%; height:800px"></div>
