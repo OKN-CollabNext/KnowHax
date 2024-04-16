@@ -23,7 +23,7 @@ jobs:
         with:
           python-version: "3.11.4"
       - name: Setup Poetry
-        uses: Gr1N/setup-poetry@v8
+        uses: Gr1N/setup-poetry@v9
         with:
           poetry-version: "1.7.1"
       - run: poetry install --no-root
