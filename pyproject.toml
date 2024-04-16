@@ -6,7 +6,7 @@ authors = ["Your Name <you@example.com>"]
 license = "CC0 1.0 Universal"
 readme = "README.md"
 packages = [
-    { include = "knowhax", from = "." }
+    { include = "collabnext", from = "." }
 ]
 
 [tool.poetry.dependencies]

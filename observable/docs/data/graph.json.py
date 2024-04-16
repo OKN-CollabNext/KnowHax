@@ -1,79 +1,41 @@
 import json
-import os
 
-import pyalex
-from dotenv import load_dotenv
-from pyalex import Authors, Institutions
+from collabnext.openalex.authors import get_affiliated_authors
+from collabnext.openalex.edges import (
+    make_affiliated_author_edges,
+    make_associated_institution_edges,
+)
+from collabnext.openalex.institutions import (
+    dedup_institutions,
+    get_associated_institutions,
+    get_institutions,
+)
+from collabnext.openalex.nodes import make_author_nodes, make_institution_nodes
 
-# Load Secrets
-load_dotenv()
+# Get institutions
+institutions = get_institutions()
 
-# Initialize the pyalex client
-pyalex.config.email = os.getenv("OPENALEX_EMAIL")
-
-# Get 5 random institutions
-institutions = [Institutions().random() for _ in range(5)]
-
-# Gather associated institutions
-associated_institutions = [
-    y for x in institutions for y in x["associated_institutions"]
-]
+# Get associated institutions
+associated_institutions = get_associated_institutions(institutions)
 
 # Combine all unique institutions
-seen = set()
-all_institutions = [
-    x
-    for x in [*institutions, *associated_institutions]
-    if not (x["id"] in seen or seen.add(x["id"]))
-]
+all_institutions = dedup_institutions([*institutions, *associated_institutions])
 
 # Create nodes
-institution_nodes = [
-    {"id": x["id"], "label": x["display_name"], "type": "INSTITUTION"}
-    for x in all_institutions
-]
+institution_nodes = make_institution_nodes(all_institutions)
 
 # Get unique affiliated authors
-seen = set()
-authors = [
-    y
-    for x in all_institutions
-    for y in Authors().filter(affiliations={"institution": {"id": x["id"]}}).get()
-    if not (y["id"] in seen or seen.add(y["id"]))
-]
+authors = get_affiliated_authors(all_institutions)
 
 # Get unique authors affiliated with each institution
-author_nodes = [
-    {"id": x["id"], "label": x["display_name"], "type": "AUTHOR"} for x in authors
-]
-
-nodes = [*institution_nodes, *author_nodes]
+author_nodes = make_author_nodes(authors)
 
 # Create associated institution edges
-associated_institution_edges = [
-    {
-        "id": f"""{x["id"]}-{y["id"]}""",
-        "start": x["id"],
-        "end": y["id"],
-        "label": "ASSOCIATED",
-        "start_type": "INSTITUTION",
-        "end_type": "INSTITUTION",
-    }
-    for x in institutions
-    for y in x["associated_institutions"]
-]
-affiliated_author_edges = [
-    {
-        "id": f"""{x["id"]}-{y["institution"]["id"]}""",
-        "start": x["id"],
-        "end": y["institution"]["id"],
-        "label": "AFFILIATED",
-        "start_type": "AUTHOR",
-        "end_type": "INSTITUTION",
-    }
-    for x in authors
-    for y in x["affiliations"]
-]
+associated_institution_edges = make_associated_institution_edges(institutions)
+affiliated_author_edges = make_affiliated_author_edges(authors)
+
+# Group all nodes and edges together
+nodes = [*institution_nodes, *author_nodes]
 edges = [*associated_institution_edges, *affiliated_author_edges]
 
 print(json.dumps({"nodes": nodes, "edges": edges}))
