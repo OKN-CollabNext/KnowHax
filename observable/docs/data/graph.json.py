@@ -2,11 +2,9 @@ import json
 import os
 
 import pyalex
-from dotenv import load_dotenv
 from pyalex import Authors, Institutions
 
-# Load Secrets
-load_dotenv()
+import collabnext  # noqa: F401
 
 # Initialize the pyalex client
 pyalex.config.email = os.getenv("OPENALEX_EMAIL")
