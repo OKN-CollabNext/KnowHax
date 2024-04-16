@@ -56,6 +56,15 @@ orb.data.setDefaultStyle({
         color: "#0df2c9",
         zIndex: 1,
       };
+    } 
+
+    if (node.data.type === "WORK") {
+      return {
+        ...basicStyle,
+        size: 10,
+        color: "#245cc3",
+        zIndex: 1,
+      };
     }
 
     return {
