@@ -1,24 +1,21 @@
 import json
 
-from pyalex import Authors, Institutions
+from pyalex import Authors
 
-import collabnext  # noqa: F401
+from collabnext.openalex.institutions import (
+    dedup_institutions,
+    get_associated_institutions,
+    get_institutions,
+)
 
-# Get 5 random institutions
-institutions = [Institutions().random() for _ in range(5)]
+# Get institutions
+institutions = get_institutions()
 
-# Gather associated institutions
-associated_institutions = [
-    y for x in institutions for y in x["associated_institutions"]
-]
+# Get associated institutions
+associated_institutions = get_associated_institutions(institutions)
 
 # Combine all unique institutions
-seen = set()
-all_institutions = [
-    x
-    for x in [*institutions, *associated_institutions]
-    if not (x["id"] in seen or seen.add(x["id"]))
-]
+all_institutions = dedup_institutions([*institutions, *associated_institutions])
 
 # Create nodes
 institution_nodes = [
