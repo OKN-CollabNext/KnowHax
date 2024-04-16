@@ -5,6 +5,9 @@ from invoke import task
 def hello(_):
     print("Hello, world!")
 
+@task
+def install(c):
+    c.run("cd observable && yarn install")
 
 @task
 def build(c):
