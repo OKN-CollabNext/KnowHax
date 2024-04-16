@@ -1,7 +1,6 @@
 import json
 
-from pyalex import Authors
-
+from collabnext.openalex.authors import get_affiliated_authors
 from collabnext.openalex.institutions import (
     dedup_institutions,
     get_associated_institutions,
@@ -24,13 +23,7 @@ institution_nodes = [
 ]
 
 # Get unique affiliated authors
-seen = set()
-authors = [
-    y
-    for x in all_institutions
-    for y in Authors().filter(affiliations={"institution": {"id": x["id"]}}).get()
-    if not (y["id"] in seen or seen.add(y["id"]))
-]
+authors = get_affiliated_authors(all_institutions)
 
 # Get unique authors affiliated with each institution
 author_nodes = [
