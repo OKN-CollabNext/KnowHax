@@ -1,13 +1,8 @@
 import json
-import os
 
-import pyalex
 from pyalex import Authors, Institutions
 
 import collabnext  # noqa: F401
-
-# Initialize the pyalex client
-pyalex.config.email = os.getenv("OPENALEX_EMAIL")
 
 # Get 5 random institutions
 institutions = [Institutions().random() for _ in range(5)]
