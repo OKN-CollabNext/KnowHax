@@ -5,7 +5,7 @@ from pathlib import Path
 from invoke import task
 
 
-# context manager that make sures subsequent
+# context manager that make sure subsequent
 # commands are run in the specified directory
 @contextlib.contextmanager
 def cwd(rel_path: str):

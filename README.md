@@ -55,10 +55,37 @@ The OPENALEX_EMAIL secret is used to [speed up calls](https://docs.openalex.org/
 
 ## Running
 
-This project uses [Observable Framework](https://observablehq.com/framework/). You can run the site locally as follows
+This project uses [Observable Framework](https://observablehq.com/framework/). You can run the site locally in development mode as follows
 
 ```bash
-invoke run
+invoke install
+invoke dev
 ```
 
 The homepage will be launched in your browser at http://127.0.0.1:3000
+
+## Deploying
+
+Deployments to this project on the Observable Cloud take place through the **Deploy** GitHub Action whenever new commits are added to the `main` branch or manually [through the GitHub UI](https://github.com/OKN-CollabNext/KnowHax/actions/workflows/deploy.yaml).
+
+## Invoke Commands
+
+You can run various other commands using `invoke` as follows.
+
+Deploy the site to Observable Cloud.
+
+```bash
+invoke deploy
+```
+
+Build the static web site locally.
+
+```bash
+invoke build
+```
+
+Delete local git branches that have already been merged.
+
+```bash
+invoke clean-branches
+```
