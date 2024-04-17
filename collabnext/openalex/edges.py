@@ -35,12 +35,12 @@ def make_work_author_edges(works: list[Work]) -> list[dict]:
     return [
         {
             "id": f"{work['id']}-{authorship['author']['id']}",
-            "start": work['id'],
-            "end": authorship['author']['id'],
+            "start": authorship["author"]["id"],
+            "end": work["id"],
             "label": "AUTHORED",
             "start_type": "WORK",
-            "end_type": "AUTHOR"
+            "end_type": "AUTHOR",
         }
         for work in works
-        for authorship in work.get('authorships', [])
+        for authorship in work.get("authorships", [])
     ]
