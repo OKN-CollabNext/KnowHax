@@ -1,27 +1,49 @@
+import contextlib
+import os
+from pathlib import Path
+
 from invoke import task
+
+
+# context manager that make sure subsequent
+# commands are run in the specified directory
+@contextlib.contextmanager
+def cwd(rel_path: str):
+    prev_cwd = os.getcwd()
+    try:
+        os.chdir(Path(__file__).parent / rel_path)
+        yield
+    finally:
+        os.chdir(prev_cwd)
 
 
 @task
 def hello(_):
     print("Hello, world!")
 
+
 @task
 def install(c):
-    c.run("cd observable && yarn install")
+    with cwd("observable"):
+        c.run("yarn install")
+
 
 @task
 def build(c):
-    c.run("cd observable && yarn build")
+    with cwd("observable"):
+        c.run("yarn build")
 
 
 @task
-def run(c):
-    c.run("cd observable && yarn dev")
+def dev(c):
+    with cwd("observable"):
+        c.run("yarn dev")
 
 
 @task
 def deploy(c):
-    c.run("cd observable && yarn deploy")
+    with cwd("observable"):
+        c.run("yarn deploy")
 
 
 @task
