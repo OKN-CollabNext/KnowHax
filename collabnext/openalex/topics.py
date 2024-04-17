@@ -7,5 +7,5 @@ def get_work_topics(works: list[Work]) -> list[Topic]:
         y
         for x in works
         for y in x["topics"]
-        if not (x["id"] in seen or seen.add(x["id"]))
+        if not (y["id"] in seen or seen.add(y["id"]))
     ]

@@ -19,6 +19,7 @@ def make_work_nodes(works: list[Work]) -> list[dict]:
 
 
 def make_topic_nodes(topics: list[Topic]) -> list[dict]:
+    seen = set()
     return [
         {
             "id": x["id"],
@@ -26,4 +27,6 @@ def make_topic_nodes(topics: list[Topic]) -> list[dict]:
             "type": "TOPIC",
         }
         for x in topics
+        # Note that topics are grouped by field
+        if not (x["field"]["id"] in seen or seen.add(x["field"]["id"]))
     ]
