@@ -31,7 +31,7 @@ def make_affiliated_author_edges(authors: list[Author]) -> list[dict]:
     ]
 
 
-def make_work_author_edges(works: list[Work]) -> list[dict]:
+def make_author_work_edges(works: list[Work]) -> list[dict]:
     return [
         {
             "id": f"{work['id']}-{authorship['author']['id']}",
@@ -43,4 +43,19 @@ def make_work_author_edges(works: list[Work]) -> list[dict]:
         }
         for work in works
         for authorship in work.get("authorships", [])
+    ]
+
+
+def make_work_topic_edges(works: list[Work]) -> list[dict]:
+    return [
+        {
+            "id": f"{work['id']}-{topic['id']}",
+            "start": work["id"],
+            "end": topic["id"],
+            "label": "TOPIC",
+            "start_type": "WORK",
+            "end_type": "TOPIC",
+        }
+        for work in works
+        for topic in work["topics"]
     ]

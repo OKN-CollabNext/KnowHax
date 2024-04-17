@@ -84,6 +84,15 @@ Build the static web site locally.
 invoke build
 ```
 
+Manually case a graph.json refresh. This is needed because currently
+observable framework doesn't notice if a dependent python module
+has been changed when developing. It only monitors changes to
+the particular page that is being displayed.
+
+```bash
+invoke touch
+```
+
 Delete local git branches that have already been merged.
 
 ```bash

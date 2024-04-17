@@ -49,3 +49,9 @@ def deploy(c):
 @task
 def clean_branches(c):
     c.run("git branch | grep -v 'main' | xargs git branch -D")
+
+
+@task
+def touch(c):
+    with cwd("observable/docs/data"):
+        c.run("touch graph.json.py")
