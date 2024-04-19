@@ -1,4 +1,8 @@
-import json
+import os
+import sqlite3
+import tempfile
+
+import pandas as pd
 
 from collabnext.openalex.authors import get_affiliated_authors
 from collabnext.openalex.edges import (
@@ -56,4 +60,20 @@ work_topic_edges = make_work_topic_edges(works)
 nodes = [*institution_nodes, *author_nodes, *work_nodes, *topic_nodes]
 edges = [*affiliated_author_edges, *work_author_edges, *work_topic_edges]
 
-print(json.dumps({"nodes": nodes, "edges": edges}))
+# Create nodes dataframe
+df_nodes = pd.DataFrame(nodes, columns=["id", "label", "type"])
+
+# Create edges dataframe
+df_edges = pd.DataFrame(
+    edges, columns=["id", "start", "end", "label", "start_type", "end_type"]
+)
+
+# Save the dataframe to a SQLite database
+with tempfile.NamedTemporaryFile(suffix=".sqlite", delete=False) as temp_file:
+    temp_filename = temp_file.name
+    with sqlite3.connect(temp_filename) as conn:
+        df_nodes.to_sql("nodes", conn, index=False)
+        df_edges.to_sql("edges", conn, index=False)
+
+# Print db file to stdout
+os.system(f"cat {temp_filename}")

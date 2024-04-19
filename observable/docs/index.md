@@ -15,11 +15,30 @@ const query = view(Inputs.text());
 ### Your Peer Network
 
 ```js
-const graph = FileAttachment("data/graph.json").json();
+import { SQLiteDatabaseClient } from "npm:@observablehq/sqlite";
+const db = FileAttachment("data/graph.sqlite").sqlite();
 ```
 
 ```js
-const { nodes, edges } = graph;
+const nodes = db.query(
+  `
+  SELECT
+    *
+  FROM
+    nodes
+  `
+);
+```
+
+```js
+const edges = db.query(
+  `
+  SELECT
+    *
+  FROM
+    edges
+  `
+);
 ```
 
 <script src="https://unpkg.com/@memgraph/orb/dist/browser/orb.min.js"></script>
