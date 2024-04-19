@@ -60,8 +60,13 @@ work_topic_edges = make_work_topic_edges(works)
 author_topic_edges = infer_author_topic_edges(author_work_edges, work_topic_edges)
 
 # Group all nodes and edges together
-nodes = [*institution_nodes, *author_nodes, *topic_nodes]
-edges = [*affiliated_author_edges, *author_topic_edges]
+nodes = [*institution_nodes, *author_nodes, *work_nodes, *topic_nodes]
+edges = [
+    *affiliated_author_edges,
+    *author_work_edges,
+    *author_topic_edges,
+    *work_topic_edges,
+]
 
 # Create nodes dataframe
 df_nodes = pd.DataFrame(nodes, columns=["id", "label", "type"])

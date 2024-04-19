@@ -26,6 +26,8 @@ const nodes = db.query(
     *
   FROM
     nodes
+  WHERE
+    nodes.type <> 'WORK'
   `
 );
 ```
@@ -37,6 +39,9 @@ const edges = db.query(
     *
   FROM
     edges
+  WHERE
+    edges.start_type <> 'WORK'
+    OR edges.end_type <> 'WORK'
   `
 );
 ```
