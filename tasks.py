@@ -54,4 +54,4 @@ def clean_branches(c):
 @task
 def touch(c):
     with cwd("observable/docs/data"):
-        c.run("touch graph.json.py")
+        c.run("touch graph.sqlite.py")
