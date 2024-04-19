@@ -2,8 +2,6 @@ import os
 import sqlite3
 import tempfile
 
-import pandas as pd
-
 from collabnext.openalex.authors import get_affiliated_authors
 from collabnext.openalex.edges import (
     make_affiliated_author_edges,
@@ -33,55 +31,39 @@ institution_nodes = make_institution_nodes(institutions)
 authors = get_affiliated_authors(institutions)
 
 # Get all authors affiliated with each institution
-author_nodes = make_author_nodes(authors)
+df_nodes = make_author_nodes(authors)
 
 # Create instutition edges
-affiliated_author_edges = make_affiliated_author_edges(authors)
+df_edges = make_affiliated_author_edges(authors)
 
 # Get works by authors
 works = get_works_by_authors(authors)
 
 # Create work nodes
-work_nodes = make_work_nodes(works)
+df_nodes = df_nodes.vstack(make_work_nodes(works))
 
 # Create author-work edges
-author_work_edges = make_author_work_edges(works)
+df_edges = df_edges.vstack(make_author_work_edges(works))
 
 # Get topics from works
 topics = get_work_topics(works)
 
 # Create topic nodes
-topic_nodes = make_topic_nodes(topics)
+df_nodes = df_nodes.vstack(make_topic_nodes(topics))
 
 # Create work-topic edges
-work_topic_edges = make_work_topic_edges(works)
+df_edges = df_edges.vstack(make_work_topic_edges(works))
 
 # Infer author-topic edges
-author_topic_edges = infer_author_topic_edges(author_work_edges, work_topic_edges)
+df_edges = df_edges.vstack(infer_author_topic_edges(df_edges))
 
-# Group all nodes and edges together
-nodes = [*institution_nodes, *author_nodes, *work_nodes, *topic_nodes]
-edges = [
-    *affiliated_author_edges,
-    *author_work_edges,
-    *author_topic_edges,
-    *work_topic_edges,
-]
-
-# Create nodes dataframe
-df_nodes = pd.DataFrame(nodes, columns=["id", "label", "type"])
-
-# Create edges dataframe
-df_edges = pd.DataFrame(
-    edges, columns=["id", "start", "end", "label", "start_type", "end_type"]
-)
 
 # Save the dataframe to a SQLite database
 with tempfile.NamedTemporaryFile(suffix=".sqlite", delete=False) as temp_file:
     temp_filename = temp_file.name
     with sqlite3.connect(temp_filename) as conn:
-        df_nodes.to_sql("nodes", conn, index=False)
-        df_edges.to_sql("edges", conn, index=False)
+        df_nodes.write_database("nodes", conn, index=False)
+        df_edges.write_database("edges", conn, index=False)
 
 # Print db file to stdout
 os.system(f"cat {temp_filename}")
