@@ -118,6 +118,7 @@ orb.data.setDefaultStyle({
   },
 });
 
+
 // Initialize nodes and edges
 orb.data.setup({ nodes, edges });
 
@@ -125,6 +126,17 @@ orb.data.setup({ nodes, edges });
 orb.view.render(() => {
   orb.view.recenter();
 });
+```
+
+```js
+orb.events.on('node-click', (event) => {
+  getData(event)
+});
+
+
+function getData(event) {
+  console.log('Node clicked: ', event.node);
+}
 ```
 
 <div id="graph" style="width:100%; height:800px"></div>

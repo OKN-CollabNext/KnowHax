@@ -81,7 +81,20 @@ edges = [
 ]
 
 # Create nodes dataframe
-df_nodes = pd.DataFrame(nodes, columns=["id", "label", "type"])
+df_nodes = pd.DataFrame(nodes, columns=[
+    "id", 
+    "label", 
+    "type",
+    "name",
+    "institution_type",
+    "homepage",
+    "works_count",
+    "cited_by_count",
+    "field",
+    "description",
+    "subfield",
+    "domain",
+    ])
 
 # Create edges dataframe
 df_edges = pd.DataFrame(
