@@ -1,0 +1,5 @@
+invoke
+pyalex
+python-dotenv
+poetry
+pandas

@@ -1,0 +1,5 @@
+
+DATA_LOAD_TYPE = "local"
+# DATA_LOAD_TYPE = "api"
+INSTITUTION_FILTER = "howardu"
+# INSTITUTION_FILTER = "hbcus"
