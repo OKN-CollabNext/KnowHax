@@ -120,14 +120,19 @@ orb.data.setDefaultStyle({
   },
 });
 
+const loaderOverlay = document.getElementById('loader-overlay');
+const graphContainer = document.getElementById('graph');
+
+// Show loader overlay
+loaderOverlay.style.display = 'flex';
 
 // Initialize nodes and edges
 orb.data.setup({ nodes, edges });
 
 // Render and recenter the view
 orb.view.render(() => {
+  loaderOverlay.style.display = 'none';
   orb.view.recenter();
-    console.log(nodes.filter(node => node.type === 'INSTITUTION'));
 });
 ```
 
@@ -175,6 +180,9 @@ function updateDetails(selectedNode) {
 ```
 
 <div class="content">
+  <div class="loader-overlay" id="loader-overlay">
+    <div class="loader"></div>
+  </div>
   <div id="graph" style="width:100%; height:800px"></div>
   <div class="details">
   <h3>Click on any node to see more details.</h3>
