@@ -1,18 +1,18 @@
 ---
 tilte: CollabNext Challenge
+style: ./styles.css
+
 ---
 
 # CollabNext Challenge
 
 Exercitation ut mollit fugiat sunt. Lorem deserunt consequat voluptate consectetur reprehenderit qui. Sit exercitation commodo non esse aliqua commodo enim aliquip est dolore sit laboris occaecat tempor. Culpa commodo ad magna dolore veniam commodo est eiusmod qui eu dolore nisi pariatur eiusmod. Est mollit esse pariatur nisi eu sunt fugiat culpa. Veniam excepteur amet duis veniam officia elit cillum sunt.
 
-## Search for anything
+Search
 
 ```js
 const query = view(Inputs.text());
 ```
-
-### Your Peer Network
 
 ```js
 import { SQLiteDatabaseClient } from "npm:@observablehq/sqlite";
@@ -55,7 +55,9 @@ const orb = new Orb.Orb(container);
 
 orb.view.setSettings({
   render: {
-    backgroundColor: "#DDDDDD",
+    backgroundColor: "#f4faff",
+    padding: "0",
+    margin: "0",
   },
 });
 
@@ -125,18 +127,56 @@ orb.data.setup({ nodes, edges });
 // Render and recenter the view
 orb.view.render(() => {
   orb.view.recenter();
+    console.log(nodes.filter(node => node.type === 'INSTITUTION'));
 });
 ```
 
 ```js
+let selectedNode;
+
 orb.events.on('node-click', (event) => {
   getData(event)
 });
 
 
 function getData(event) {
-  console.log('Node clicked: ', event.node);
+  selectedNode = event.node.data;
+  updateDetails(selectedNode)
+}
+
+const details = document.querySelector('.details')
+
+function updateDetails(selectedNode) {
+  details.innerHTML = '';
+
+  let html = '';
+
+  if (selectedNode) {
+    html += `<h1>${selectedNode.label}</h1>`;
+
+    if (selectedNode.type === 'INSTITUTION') {
+      html += `<p><b>Institution type:</b> ${selectedNode.type}</p>`;
+      html += `<p><b>Homepage:</b> ${selectedNode.homepage}</p>`;
+      html += `<p><b>Works:</b> ${selectedNode.works_count}</p>`;
+      html += `<p><b>Cited by:</b> ${selectedNode.cited_by_count}</p>`;
+    } else if (selectedNode.type === 'AUTHOR') {
+      html += `<p><b>Works:</b> ${selectedNode.works_count}</p>`;
+      html += `<p><b>Cited by:</b> ${selectedNode.cited_by_count}</p>`;
+    } else if (selectedNode.type === 'TOPIC') {
+      html += `<p><b>Description:</b> ${selectedNode.description}</p>`;
+      html += `<p><b>Subfield:</b> ${selectedNode.subfield}</p>`;
+      html += `<p><b>Domain:</b> ${selectedNode.domain}</p>`;
+    }
+  }
+
+  // Set the generated HTML content to the details element
+  details.innerHTML = html;
 }
 ```
 
-<div id="graph" style="width:100%; height:800px"></div>
+<div class="content">
+  <div id="graph" style="width:100%; height:800px"></div>
+  <div class="details">
+  <h3>Click on any node to see more details.</h3>
+  </div>
+</div>
