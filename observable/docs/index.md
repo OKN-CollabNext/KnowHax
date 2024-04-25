@@ -146,6 +146,7 @@ orb.events.on('node-click', (event) => {
 
 function getData(event) {
   selectedNode = event.node.data;
+  console.log(selectedNode)
   updateDetails(selectedNode)
 }
 
@@ -169,6 +170,7 @@ function updateDetails(selectedNode) {
       html += `<p><b>Cited by:</b> ${selectedNode.cited_by_count}</p>`;
     } else if (selectedNode.type === 'TOPIC') {
       html += `<p><b>Description:</b> ${selectedNode.description}</p>`;
+      html += `<p><b>Field:</b> ${selectedNode.field}</p>`;
       html += `<p><b>Subfield:</b> ${selectedNode.subfield}</p>`;
       html += `<p><b>Domain:</b> ${selectedNode.domain}</p>`;
     }
