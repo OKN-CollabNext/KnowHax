@@ -1,4 +1,4 @@
-from pyalex import Author, Institution, Work
+from pyalex import Author, Institution, Topic, Work
 
 
 def make_associated_institution_edges(institutions: list[Institution]) -> list[dict]:
@@ -52,7 +52,8 @@ def make_author_work_edges(authors: list[Author], works: list[Work]) -> list[dic
     ]
 
 
-def make_work_topic_edges(works: list[Work]) -> list[dict]:
+def make_work_topic_edges(works: list[Work], topics: list[Topic]) -> list[dict]:
+    topic_ids = [x["id"] for x in topics]
     return [
         {
             "id": f"{work['id']}-{topic['id']}",
@@ -64,4 +65,5 @@ def make_work_topic_edges(works: list[Work]) -> list[dict]:
         }
         for work in works
         for topic in work["topics"]
+        if topic["id"] in topic_ids
     ]

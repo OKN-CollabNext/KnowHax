@@ -60,11 +60,16 @@ work_nodes = make_work_nodes(works)
 # Create author-work edges
 author_work_edges = make_author_work_edges(authors, works)
 
+# Keep author nodes with works
+author_nodes = [
+    x for x in author_nodes if x["id"] in {y["start"] for y in author_work_edges}
+]
+
 # Create topic nodes
 topic_nodes = make_topic_nodes(topics)
 
 # Create work-topic edges
-work_topic_edges = make_work_topic_edges(works)
+work_topic_edges = make_work_topic_edges(works, topics)
 
 # Infer author-topic edges
 author_topic_edges = infer_author_topic_edges(author_work_edges, work_topic_edges)
