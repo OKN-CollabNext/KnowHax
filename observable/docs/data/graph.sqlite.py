@@ -6,8 +6,8 @@ import pandas as pd
 
 from collabnext.openalex.authors import get_affiliated_authors
 from collabnext.openalex.edges import (
+    make_author_institution_edges,
     make_author_work_edges,
-    make_institution_author_edges,
     make_work_topic_edges,
 )
 from collabnext.openalex.inference import infer_author_topic_edges
@@ -51,8 +51,8 @@ institution_nodes = make_institution_nodes(institutions)
 # Get all authors affiliated with each institution
 author_nodes = make_author_nodes(authors)
 
-# Create instutition edges
-institution_author_edges = make_institution_author_edges(authors)
+# Create author -> instutition edges
+author_institution_edges = make_author_institution_edges(authors)
 
 # Create work nodes
 work_nodes = make_work_nodes(works)
@@ -72,7 +72,7 @@ author_topic_edges = infer_author_topic_edges(author_work_edges, work_topic_edge
 # Group all nodes and edges together
 nodes = [*institution_nodes, *author_nodes, *work_nodes, *topic_nodes]
 edges = [
-    *institution_author_edges,
+    *author_institution_edges,
     *author_work_edges,
     *author_topic_edges,
     *work_topic_edges,

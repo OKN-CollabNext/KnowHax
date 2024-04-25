@@ -16,7 +16,7 @@ def make_associated_institution_edges(institutions: list[Institution]) -> list[d
     ]
 
 
-def make_institution_author_edges(authors: list[Author]) -> list[dict]:
+def make_author_institution_edges(authors: list[Author]) -> list[dict]:
     return [
         {
             "id": f"""{x["id"]}-{y["institution"]["id"]}""",
