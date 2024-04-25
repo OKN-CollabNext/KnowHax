@@ -14,16 +14,16 @@ pyenv install 3.11.4
 
 ### Node
 
-This code base is compatible with node 18 and above. Please use [the following instructions](https://nodejs.org/en/learn/getting-started/how-to-install-nodejs)
+This code base is compatible with node 18 and above. Please use [these instructions](https://nodejs.org/en/learn/getting-started/how-to-install-nodejs)
 to install node for your operating system if needed.
 
 ### Git
 
-Please [follow the instructions on GitHub](https://github.com/git-guides/install-git) to install git on your system.
+Please follow the [instructions on GitHub](https://github.com/git-guides/install-git) to install git on your system.
 
 ### Poetry
 
-Please [follow the instractions on the Poetry website](https://python-poetry.org/docs/#installation) to install poetry on your system.
+Please follow the [instructions on the Poetry website](https://python-poetry.org/docs/#installation) to install poetry on your system.
 
 ## Getting Started
 
@@ -45,13 +45,21 @@ You can then install project dependencies as follows:
 poetry install
 ```
 
-You need a `.env` file to store secrets as follows:
+You need a `.env` file to store secrets and other environment variables as follows:
 
 ```
 OPENALEX_EMAIL=mailto@example.com
+INSTITUTIONS_FETCH_FILTER=hbcus
+INSTITUTIONS_FETCH_COUNT=5
 ```
 
 The OPENALEX_EMAIL secret is used to [speed up calls](https://docs.openalex.org/how-to-use-the-api/api-overview) to the OpenAlex REST API.
+
+INSTITUTIONS_FETCH_FILTER (allowed values = `hbcus` or `howardu`) is used to configure which institutions will be fetched from the OpenAlex API and saved to `observable/docs/data/institutions.json`.
+
+INSTITUTIONS_FETCH_COUNT determines how many institutions will be loaded in the application.
+
+>**NOTE:** INSTITUTIONS_FETCH_FILTER and INSTITUTIONS_FETCH_COUNT are only used when running `fetch_custom_institutions.py` as a script. When using `invoke fetch` the default values of `hbcus` and `5` are used respectively.
 
 ## Running
 
@@ -72,13 +80,19 @@ Deployments to this project on the Observable Cloud take place through the **Dep
 
 You can run various other commands using `invoke` as follows.
 
-Deploy the site to Observable Cloud.
+Fetch first 5 HBCUs institutions data from the OpenAlex API and save it to `observable/docs/data/institutions.json`:
+
+```bash
+invoke fetch
+```
+
+Deploy the site to Observable Cloud:
 
 ```bash
 invoke deploy
 ```
 
-Build the static web site locally.
+Build the static web site locally:
 
 ```bash
 invoke build
@@ -87,13 +101,13 @@ invoke build
 Manually case a graph.json refresh. This is needed because currently
 observable framework doesn't notice if a dependent python module
 has been changed when developing. It only monitors changes to
-the particular page that is being displayed.
+the particular page that is being displayed.:
 
 ```bash
 invoke touch
 ```
 
-Delete local git branches that have already been merged.
+Delete local git branches that have already been merged:
 
 ```bash
 invoke clean-branches

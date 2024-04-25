@@ -23,20 +23,8 @@ from collabnext.openalex.nodes import (
 from collabnext.openalex.topics import get_work_topics
 from collabnext.openalex.works import get_works_by_authors
 
-from collabnext import settings, custom
-
 # Get institutions
-institutions = []
-try:
-    if settings.INSTITUTION_FILTER == "howardu":
-        institutions = custom.get_institutions_howardu()
-    elif settings.INSTITUTION_FILTER == "hbcus":
-        institutions = custom.get_institutions_hbcus(settings.DATA_LOAD_TYPE)
-except Exception as e:
-    print("\nError getting custom institutions:", e, "\n")
-
-if institutions is None or len(institutions) == 0:
-    institutions = get_institutions()
+institutions = get_institutions()
 
 # Create nodes
 institution_nodes = make_institution_nodes(institutions)
