@@ -35,7 +35,8 @@ def make_author_institution_edges(
     ]
 
 
-def make_author_work_edges(works: list[Work]) -> list[dict]:
+def make_author_work_edges(works: list[Work], authors: list[Author]) -> list[dict]:
+    author_ids = [x["id"] for x in authors]
     return [
         {
             "id": f"{work['id']}-{authorship['author']['id']}",
@@ -47,6 +48,7 @@ def make_author_work_edges(works: list[Work]) -> list[dict]:
         }
         for work in works
         for authorship in work.get("authorships", [])
+        if authorship["author"]["id"] in author_ids
     ]
 
 

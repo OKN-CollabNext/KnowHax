@@ -58,7 +58,7 @@ author_institution_edges = make_author_institution_edges(authors, institutions)
 work_nodes = make_work_nodes(works)
 
 # Create author-work edges
-author_work_edges = make_author_work_edges(works)
+author_work_edges = make_author_work_edges(works, authors)
 
 # Create topic nodes
 topic_nodes = make_topic_nodes(topics)
