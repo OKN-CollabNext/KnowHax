@@ -6,8 +6,8 @@ import pandas as pd
 
 from collabnext.openalex.authors import get_affiliated_authors
 from collabnext.openalex.edges import (
-    make_affiliated_author_edges,
     make_author_work_edges,
+    make_institution_author_edges,
     make_work_topic_edges,
 )
 from collabnext.openalex.inference import infer_author_topic_edges
@@ -21,34 +21,44 @@ from collabnext.openalex.nodes import (
     make_work_nodes,
 )
 from collabnext.openalex.topics import get_work_topics
-from collabnext.openalex.works import get_works_by_authors
+from collabnext.openalex.works import filter_works_by_institution, get_works_by_authors
+
+#
+# Get and filter date from OpenAlex
+#
 
 # Get institutions
 institutions = get_institutions()
 
-# Create nodes
-institution_nodes = make_institution_nodes(institutions)
-
 # Get unique affiliated authors
 authors = get_affiliated_authors(institutions)
+
+# Get works by authors
+works = get_works_by_authors(authors)
+
+works = filter_works_by_institution(works, institutions)
+
+# Get topics from works
+topics = get_work_topics(works)
+
+#
+# Convert into nodes and edges
+#
+
+# Create nodes
+institution_nodes = make_institution_nodes(institutions)
 
 # Get all authors affiliated with each institution
 author_nodes = make_author_nodes(authors)
 
 # Create instutition edges
-affiliated_author_edges = make_affiliated_author_edges(authors)
-
-# Get works by authors
-works = get_works_by_authors(authors)
+institution_author_edges = make_institution_author_edges(authors)
 
 # Create work nodes
 work_nodes = make_work_nodes(works)
 
 # Create author-work edges
 author_work_edges = make_author_work_edges(works)
-
-# Get topics from works
-topics = get_work_topics(works)
 
 # Create topic nodes
 topic_nodes = make_topic_nodes(topics)
@@ -62,27 +72,34 @@ author_topic_edges = infer_author_topic_edges(author_work_edges, work_topic_edge
 # Group all nodes and edges together
 nodes = [*institution_nodes, *author_nodes, *work_nodes, *topic_nodes]
 edges = [
-    *affiliated_author_edges,
+    *institution_author_edges,
     *author_work_edges,
     *author_topic_edges,
     *work_topic_edges,
 ]
 
+#
+# Create SQLite database
+#
+
 # Create nodes dataframe
-df_nodes = pd.DataFrame(nodes, columns=[
-    "id", 
-    "label", 
-    "type",
-    "name",
-    "institution_type",
-    "homepage",
-    "works_count",
-    "cited_by_count",
-    "field",
-    "description",
-    "subfield",
-    "domain",
-    ])
+df_nodes = pd.DataFrame(
+    nodes,
+    columns=[
+        "id",
+        "label",
+        "type",
+        "name",
+        "institution_type",
+        "homepage",
+        "works_count",
+        "cited_by_count",
+        "field",
+        "description",
+        "subfield",
+        "domain",
+    ],
+)
 
 # Create edges dataframe
 df_edges = pd.DataFrame(
