@@ -35,7 +35,7 @@ def make_author_institution_edges(
     ]
 
 
-def make_author_work_edges(works: list[Work], authors: list[Author]) -> list[dict]:
+def make_author_work_edges(authors: list[Author], works: list[Work]) -> list[dict]:
     author_ids = [x["id"] for x in authors]
     return [
         {
