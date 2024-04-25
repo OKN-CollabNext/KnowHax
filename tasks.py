@@ -60,4 +60,4 @@ def touch(c):
 @task
 def fetch(c):
     with cwd("."):
-        c.run("python scripts/fetch_custom_institutions.py hbcus")
+        c.run("python scripts/fetch_custom_institutions.py hbcus 5")

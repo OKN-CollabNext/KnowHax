@@ -49,12 +49,17 @@ You need a `.env` file to store secrets and other environment variables as follo
 
 ```
 OPENALEX_EMAIL=mailto@example.com
-INSTITUTION_FILTER=hbcus
+INSTITUTIONS_FETCH_FILTER=hbcus
+INSTITUTIONS_FETCH_COUNT=5
 ```
 
 The OPENALEX_EMAIL secret is used to [speed up calls](https://docs.openalex.org/how-to-use-the-api/api-overview) to the OpenAlex REST API.
 
-The INSTITUTION_FILTER (allowed values = `hbcus` or `howardu`) is used to configure which institutions will be fetched from the OpenAlex API and saved to `observable/docs/data/institutions.json`. You will need to delete the existing `institutions.json` file from your local to ensure that a fresh API call is made.
+INSTITUTIONS_FETCH_FILTER (allowed values = `hbcus` or `howardu`) is used to configure which institutions will be fetched from the OpenAlex API and saved to `observable/docs/data/institutions.json`.
+
+INSTITUTIONS_FETCH_COUNT determines how many institutions will be loaded in the application.
+
+>**NOTE:** INSTITUTIONS_FETCH_FILTER and INSTITUTIONS_FETCH_COUNT are only used when running `fetch_custom_institutions.py` as a script. When using `invoke fetch` the default values of `hbcus` and `5` are used respectively.
 
 ## Running
 
@@ -75,7 +80,7 @@ Deployments to this project on the Observable Cloud take place through the **Dep
 
 You can run various other commands using `invoke` as follows.
 
-Fetch HBCUs institutions data from the OpenAlex API and save it to `observable/docs/data/institutions.json`:
+Fetch first 5 HBCUs institutions data from the OpenAlex API and save it to `observable/docs/data/institutions.json`:
 
 ```bash
 invoke fetch
