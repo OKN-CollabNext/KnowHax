@@ -52,7 +52,7 @@ institution_nodes = make_institution_nodes(institutions)
 author_nodes = make_author_nodes(authors)
 
 # Create author -> instutition edges
-author_institution_edges = make_author_institution_edges(authors)
+author_institution_edges = make_author_institution_edges(authors, institutions)
 
 # Create work nodes
 work_nodes = make_work_nodes(works)
