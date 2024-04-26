@@ -4,7 +4,7 @@ from pyalex import Author, Institution, Topic, Work
 def make_institution_nodes(institutions: list[Institution]) -> list[dict]:
     return [
         {
-            "id": x["id"], 
+            "id": x["id"],
             "name": x["display_name"],
             "institution_type": x["type"],
             "homepage": x["homepage_url"],
@@ -14,8 +14,8 @@ def make_institution_nodes(institutions: list[Institution]) -> list[dict]:
             "description": None,
             "subfield": None,
             "domain": None,
-            "label": x["display_name"], 
-            "type": "INSTITUTION"
+            "label": x["display_name"],
+            "type": "INSTITUTION",
         }
         for x in institutions
     ]
@@ -27,16 +27,16 @@ def make_author_nodes(authors: list[Author]) -> list[dict]:
             "id": x["id"],
             "name": x["display_name"],
             "institution_type": None,
-            "homepage": None, 
+            "homepage": None,
             "works_count": x["works_count"],
             "cited_by_count": x["cited_by_count"],
             "field": None,
             "description": None,
             "subfield": None,
             "domain": None,
-            "label": x["display_name"], 
-            "type": "AUTHOR"
-        } 
+            "label": x["display_name"],
+            "type": "AUTHOR",
+        }
         for x in authors
     ]
 
@@ -44,20 +44,21 @@ def make_author_nodes(authors: list[Author]) -> list[dict]:
 def make_work_nodes(works: list[Work]) -> list[dict]:
     return [
         {
-            "id": x["id"], 
+            "id": x["id"],
             "name": None,
             "institution_type": None,
-            "homepage": None, 
+            "homepage": None,
             "works_count": None,
             "cited_by_count": None,
             "field": None,
             "description": None,
             "subfield": None,
             "domain": None,
-            "label": x["title"], 
-            "type": "WORK"
-        } 
-        for x in works]
+            "label": x["title"],
+            "type": "WORK",
+        }
+        for x in works
+    ]
 
 
 def make_topic_nodes(topics: list[Topic]) -> list[dict]:
@@ -81,3 +82,10 @@ def make_topic_nodes(topics: list[Topic]) -> list[dict]:
         # Note that topics are grouped by field
         if not (x["field"]["id"] in seen or seen.add(x["field"]["id"]))
     ]
+
+
+def clamp_author_nodes_to_author_work_edges(
+    author_nodes: list[dict], author_work_edges: list[dict]
+) -> list[dict]:
+    author_ids = {x["start"] for x in author_work_edges}
+    return [x for x in author_nodes if x["id"] in author_ids]

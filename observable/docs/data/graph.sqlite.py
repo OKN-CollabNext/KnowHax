@@ -15,13 +15,17 @@ from collabnext.openalex.institutions import (
     get_institutions,
 )
 from collabnext.openalex.nodes import (
+    clamp_author_nodes_to_author_work_edges,
     make_author_nodes,
     make_institution_nodes,
     make_topic_nodes,
     make_work_nodes,
 )
 from collabnext.openalex.topics import get_work_topics
-from collabnext.openalex.works import filter_works_by_institution, get_works_by_authors
+from collabnext.openalex.works import (
+    clamp_works_to_institutions,
+    get_works_by_authors,
+)
 
 #
 # Get and filter date from OpenAlex
@@ -33,10 +37,11 @@ institutions = get_institutions()
 # Get unique affiliated authors
 authors = get_affiliated_authors(institutions)
 
-# Get works by authors
+# Get works by authors in these institutions
 works = get_works_by_authors(authors)
 
-works = filter_works_by_institution(works, institutions)
+# Clamp works to institutions
+works = clamp_works_to_institutions(works, institutions)
 
 # Get topics from works
 topics = get_work_topics(works)
@@ -60,10 +65,8 @@ work_nodes = make_work_nodes(works)
 # Create author-work edges
 author_work_edges = make_author_work_edges(authors, works)
 
-# Keep author nodes with works
-author_nodes = [
-    x for x in author_nodes if x["id"] in {y["start"] for y in author_work_edges}
-]
+# Clamp author nodes to those with works
+author_nodes = clamp_author_nodes_to_author_work_edges(author_nodes, author_work_edges)
 
 # Create topic nodes
 topic_nodes = make_topic_nodes(topics)
