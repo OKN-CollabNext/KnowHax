@@ -29,6 +29,8 @@ jobs:
       - run: poetry install
       - run: yarn install --frozen-lockfile
       - run: poetry run yarn build
+        env:
+          BUILD_ENV: production
       - name: Deploy to Observable Cloud
         # This parameter to `--message` will use the latest commit message
         run: yarn deploy -- --message "$(git log -1 --pretty=%s)"
