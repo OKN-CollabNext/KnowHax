@@ -11,7 +11,7 @@ body {
   color: #333;
   background-color: #f4faff;
   margin: 2vmin;
-  padding: 2vmin;
+  padding: 2vmin 10vmin;
 }
 
 a {
@@ -19,13 +19,22 @@ a {
   text-decoration: none;
 }
 
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: 1vmin;
+  width: 90%;
+  margin: 2vmin 0;
+}
+
 .content {
   position: relative;
-  padding: 1vmin;
-  margin: 2vmin;
+  width: 90%;
+  margin: 2vmin 0;
 }
 
 .details {
+  display: none;
   position: absolute;
   top: 2vmin;
   left: 2vmin;
