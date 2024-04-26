@@ -71,7 +71,7 @@ def make_topic_nodes(topics: list[Topic]) -> list[dict]:
             "works_count": None,
             "cited_by_count": None,
             "field": x["field"]["display_name"],
-            "description": x["description"],
+            "description": x.get("description"),
             "subfield": x["subfield"]["display_name"],
             "domain": x["domain"]["display_name"],
             "label": x["field"]["display_name"],
