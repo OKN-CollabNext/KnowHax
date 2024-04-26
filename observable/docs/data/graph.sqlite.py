@@ -15,13 +15,13 @@ from collabnext.openalex.institutions import (
     get_institutions,
 )
 from collabnext.openalex.nodes import (
-    clamp_author_nodes_to_author_work_edges,
     make_author_nodes,
     make_institution_nodes,
     make_topic_nodes,
     make_work_nodes,
 )
 from collabnext.openalex.topics import get_work_topics
+from collabnext.openalex.utils import clamp_author_nodes_to_author_edges
 from collabnext.openalex.works import (
     clamp_works_to_institutions,
     get_works_by_authors,
@@ -66,7 +66,7 @@ work_nodes = make_work_nodes(works)
 author_work_edges = make_author_work_edges(authors, works)
 
 # Clamp author nodes to those with works
-author_nodes = clamp_author_nodes_to_author_work_edges(author_nodes, author_work_edges)
+author_nodes = clamp_author_nodes_to_author_edges(author_nodes, author_work_edges)
 
 # Create topic nodes
 topic_nodes = make_topic_nodes(topics)
@@ -76,6 +76,9 @@ work_topic_edges = make_work_topic_edges(works, topics)
 
 # Infer author-topic edges
 author_topic_edges = infer_author_topic_edges(author_work_edges, work_topic_edges)
+
+# Clamp author nodes to author topic edges
+author_nodes = clamp_author_nodes_to_author_edges(author_nodes, author_topic_edges)
 
 # Group all nodes and edges together
 nodes = [*institution_nodes, *author_nodes, *work_nodes, *topic_nodes]
