@@ -1,18 +1,21 @@
 ---
 tilte: CollabNext Challenge
+style: ./styles.css
+
 ---
 
 # CollabNext Challenge
 
-Exercitation ut mollit fugiat sunt. Lorem deserunt consequat voluptate consectetur reprehenderit qui. Sit exercitation commodo non esse aliqua commodo enim aliquip est dolore sit laboris occaecat tempor. Culpa commodo ad magna dolore veniam commodo est eiusmod qui eu dolore nisi pariatur eiusmod. Est mollit esse pariatur nisi eu sunt fugiat culpa. Veniam excepteur amet duis veniam officia elit cillum sunt.
+<div class="intro">
+  <p>Researchers struggle to discover connections between researchers and topics from HBCUs and underrepresented universities due to the lack of tools available that focus on diversity and inclusion of underrepresented researchers. Our app seeks to address this problem by creating a knowledge graph visualization with an intuitive user interface that allows researchers, students, conference organizers and others to discover researchers from HBCUs and understand how they are connected through their institutions and research topics.<p>
 
-## Search for anything
+  <p>With a sample of 5 HBCUs as our example, our app provides and interface for the user to explore a visual interactive representation of data from OpenAlex. Our app represents a scalable starting point towards addressing the broader systemic issue of diversity and inclusion in research data.</p>
+</div>
+
 
 ```js
-const query = view(Inputs.text());
+const query = view(Inputs.text({placeholder: "Search"}));
 ```
-
-### Your Peer Network
 
 ```js
 import { SQLiteDatabaseClient } from "npm:@observablehq/sqlite";
@@ -55,7 +58,9 @@ const orb = new Orb.Orb(container);
 
 orb.view.setSettings({
   render: {
-    backgroundColor: "#DDDDDD",
+    backgroundColor: "#f4faff",
+    padding: "0",
+    margin: "0",
   },
 });
 
@@ -118,25 +123,72 @@ orb.data.setDefaultStyle({
   },
 });
 
+const loaderOverlay = document.getElementById('loader-overlay');
+const graphContainer = document.getElementById('graph');
+const details = document.querySelector('.details');
+
+// Show loader overlay
+loaderOverlay.style.display = 'flex';
 
 // Initialize nodes and edges
 orb.data.setup({ nodes, edges });
 
 // Render and recenter the view
 orb.view.render(() => {
+  loaderOverlay.style.display = 'none';
+  details.style.display = 'block';
   orb.view.recenter();
 });
 ```
 
 ```js
+let selectedNode;
+
 orb.events.on('node-click', (event) => {
   getData(event)
 });
 
 
 function getData(event) {
-  console.log('Node clicked: ', event.node);
+  selectedNode = event.node.data;
+  updateDetails(selectedNode)
+}
+
+const details = document.querySelector('.details')
+
+function updateDetails(selectedNode) {
+  details.innerHTML = '';
+  let html = '';
+
+  if (selectedNode) {
+    details.style.display = 'block'
+    html += `<h2>${selectedNode.label}</h2>`;
+
+    if (selectedNode.type === 'INSTITUTION') {
+      html += `<p><b>Homepage:</b> <a href="${selectedNode.homepage}">${selectedNode.homepage}</a></p>`;
+      html += `<p><b>Works:</b> ${selectedNode.works_count}</p>`;
+      html += `<p><b>Cited by:</b> ${selectedNode.cited_by_count}</p>`;
+      html += `<a href="${selectedNode.id}" target="_blank">View on OpenAlex</a>`;
+    } else if (selectedNode.type === 'AUTHOR') {
+      html += `<p><b>Works:</b> ${selectedNode.works_count}</p>`;
+      html += `<p><b>Cited by:</b> ${selectedNode.cited_by_count}</p>`;
+      html += `<a href="${selectedNode.id}" target="_blank">View on OpenAlex</a>`;
+    } else if (selectedNode.type === 'TOPIC') {
+      html += `<p><b>Subfield:</b> ${selectedNode.subfield}</p>`;
+      html += `<p><b>Domain:</b> ${selectedNode.domain}</p>`;
+      html += `<a href="${selectedNode.id}" target="_blank">View on OpenAlex</a>`;
+    }
+  } 
+  details.innerHTML = html;
 }
 ```
 
-<div id="graph" style="width:100%; height:800px"></div>
+<div class="content">
+  <div class="loader-overlay" id="loader-overlay">
+    <div class="loader"></div>
+  </div>
+  <div id="graph" style="width:100%; height:800px"></div>
+  <div class="details">
+    <h3>Click any node to see more details.</h3>
+  </div>
+</div>
