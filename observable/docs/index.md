@@ -8,7 +8,7 @@ style: ./styles.css
 <div class="intro">
   <p>Researchers struggle to discover connections between researchers and topics from HBCUs and underrepresented universities due to the lack of tools available that focus on diversity and inclusion of underrepresented researchers. Our app seeks to address this problem by creating a knowledge graph visualization with an intuitive user interface that allows researchers, students, conference organizers and others to discover researchers from HBCUs and understand how they are connected through their institutions and research topics.<p>
 
-  <p>With a sample of 5 HBCUs as our example, our app provides and interface for the user to explore a visual interactive representation of data from OpenAlex. Our app represents a scalable starting point towards addressing the broader systemic issue of diversity and inclusion in research data.</p>
+  <p>With a sample of HBCUs, our app provides an interface for the user to explore a visual interactive representation of data from OpenAlex. Our app represents a scalable starting point towards addressing the broader systemic issue of diversity and inclusion in research data.</p>
 </div>
 
 ```js
