@@ -22,8 +22,9 @@ from collabnext.openalex.nodes import (
 )
 from collabnext.openalex.topics import get_work_topics
 from collabnext.openalex.utils import (
-    clamp_author_edges_to_nodes,
-    clamp_author_nodes_to_edges,
+    clamp_edge_start_to_nodes,
+    clamp_nodes_to_edge_end,
+    clamp_nodes_to_edge_start,
 )
 from collabnext.openalex.works import (
     clamp_works_to_institutions,
@@ -62,14 +63,25 @@ author_nodes = make_author_nodes(authors)
 # Create author -> instutition edges
 author_institution_edges = make_author_institution_edges(authors, institutions)
 
+
 # Create work nodes
 work_nodes = make_work_nodes(works)
 
 # Create author -> work edges
 author_work_edges = make_author_work_edges(authors, works)
 
+
 # Clamp author nodes to those with works
-author_nodes = clamp_author_nodes_to_edges(author_nodes, author_work_edges)
+author_nodes = clamp_nodes_to_edge_start(author_nodes, author_work_edges)
+
+# Clamp work nodes to those with authors
+work_nodes = clamp_nodes_to_edge_end(work_nodes, author_work_edges)
+
+# Clamp author institution edges to those with work
+author_institution_edges = clamp_edge_start_to_nodes(
+    author_institution_edges, author_nodes
+)
+
 
 # Create topic nodes
 topic_nodes = make_topic_nodes(topics)
@@ -77,16 +89,27 @@ topic_nodes = make_topic_nodes(topics)
 # Create work-topic edges
 work_topic_edges = make_work_topic_edges(works, topics)
 
+# Clamp work nodes to those with topics
+work_nodes = clamp_nodes_to_edge_start(work_nodes, work_topic_edges)
+
+# Clamp topic nodes to those with works
+topic_nodes = clamp_nodes_to_edge_end(topic_nodes, work_topic_edges)
+
+
 # Infer author-topic edges
 author_topic_edges = infer_author_topic_edges(author_work_edges, work_topic_edges)
 
-# Clamp author nodes to author topic edges
-author_nodes = clamp_author_nodes_to_edges(author_nodes, author_topic_edges)
+# Clamp author nodes to those with topics
+author_nodes = clamp_nodes_to_edge_start(author_nodes, author_topic_edges)
 
-# Clamp author -> institution edges to those with topics
-author_institution_edges = clamp_author_edges_to_nodes(
+# Clamp topic nodes to those with authors
+topic_nodes = clamp_nodes_to_edge_end(topic_nodes, author_topic_edges)
+
+# Clamp author institution edges to those with topics
+author_institution_edges = clamp_edge_start_to_nodes(
     author_institution_edges, author_nodes
 )
+
 
 # Group all nodes and edges together
 nodes = [*institution_nodes, *author_nodes, *work_nodes, *topic_nodes]

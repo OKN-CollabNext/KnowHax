@@ -58,6 +58,6 @@ def touch(c):
 
 
 @task
-def fetch(c):
+def fetch(c, count: int = 5):
     with cwd("."):
-        c.run("python scripts/fetch_custom_institutions.py hbcus 5")
+        c.run(f"python scripts/fetch_custom_institutions.py hbcus {count}")
