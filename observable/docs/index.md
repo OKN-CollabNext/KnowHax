@@ -146,7 +146,6 @@ orb.events.on('node-click', (event) => {
 
 function getData(event) {
   selectedNode = event.node.data;
-  console.log(selectedNode)
   updateDetails(selectedNode)
 }
 
@@ -158,21 +157,21 @@ function updateDetails(selectedNode) {
   let html = '';
 
   if (selectedNode) {
-    html += `<h1>${selectedNode.label}</h1>`;
+    html += `<h2>${selectedNode.label}</h2>`;
 
     if (selectedNode.type === 'INSTITUTION') {
-      html += `<p><b>Institution type:</b> ${selectedNode.type}</p>`;
-      html += `<p><b>Homepage:</b> ${selectedNode.homepage}</p>`;
+      html += `<p><b>Homepage:</b> <a href="${selectedNode.homepage}">${selectedNode.homepage}</a></p>`;
       html += `<p><b>Works:</b> ${selectedNode.works_count}</p>`;
       html += `<p><b>Cited by:</b> ${selectedNode.cited_by_count}</p>`;
+      html += `<a href="${selectedNode.id}" target="_blank">View on OpenAlex</a>`;
     } else if (selectedNode.type === 'AUTHOR') {
       html += `<p><b>Works:</b> ${selectedNode.works_count}</p>`;
       html += `<p><b>Cited by:</b> ${selectedNode.cited_by_count}</p>`;
+      html += `<a href="${selectedNode.id}" target="_blank">View on OpenAlex</a>`;
     } else if (selectedNode.type === 'TOPIC') {
-      html += `<p><b>Description:</b> ${selectedNode.description}</p>`;
-      html += `<p><b>Field:</b> ${selectedNode.field}</p>`;
       html += `<p><b>Subfield:</b> ${selectedNode.subfield}</p>`;
       html += `<p><b>Domain:</b> ${selectedNode.domain}</p>`;
+      html += `<a href="${selectedNode.id}" target="_blank">View on OpenAlex</a>`;
     }
   }
 
