@@ -55,3 +55,9 @@ def clean_branches(c):
 def touch(c):
     with cwd("observable/docs/data"):
         c.run("touch graph.sqlite.py")
+
+
+@task
+def fetch(c):
+    with cwd("."):
+        c.run("python scripts/fetch_custom_institutions.py hbcus 5")
